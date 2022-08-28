@@ -21,9 +21,6 @@ describe('Authentication', () => {
       name: "kevin"
     };
 
-    console.log('JWT_SECRET');
-    console.log(process.env.JWT_SECRET);
-
     const createdUser = await inMemoryUserRepository.create(user);
 
     const result = await authenticateUserUseCase.execute({email: user.email, password: '123'});
