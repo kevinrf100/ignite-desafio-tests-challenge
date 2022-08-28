@@ -7,7 +7,7 @@ import { hash } from "bcryptjs";
 
 let connection: Connection;
 
-describe("Authenticate User", () => {
+describe("Balance", () => {
   beforeAll(async () => {
     connection = await createConnection();
 
@@ -18,7 +18,7 @@ describe("Authenticate User", () => {
 
     await connection.query(
       `INSERT INTO USERS(id, name, email, password, created_at, updated_at)
-      values('${id}', 'admin', 'ad@test.com.br', '${password}', 'now()', 'now()')`
+      values('${id}', 'admin', 'admin@test.com.br', '${password}', 'now()', 'now()')`
     );
   });
 
@@ -27,25 +27,28 @@ describe("Authenticate User", () => {
       await connection.close();
   });
 
-  it("Should be able to show User profile", async () => {
+  it("Should be able to get balance", async () => {
     const user = {
-      email: "ad@test.com.br",
+      email: "admin@test.com.br",
       password: "admin",
     }
+
     const authResponse = await request(app).post('/api/v1/sessions').send(user);
 
     const { token } = authResponse.body;
 
-    const response = await request(app).get('/api/v1/profile').set({ Authorization: `Bearer ${token}` });
+    const response = await request(app).get('/api/v1/statements/balance').set({ Authorization: `Bearer ${token}` });
 
     expect(response.status).toBe(200);
-    expect(response.body).toHaveProperty('id');
-    expect(response.body.email).toEqual(user.email);
+    expect(response.body).toHaveProperty("statement");
+    expect(response.body).toHaveProperty("balance");
+    expect(response.body.balance).toBe(0);
   });
 
-  it("Should not be able to show user profile for a nonexistent user", async () => {
-    const response = await request(app).get('/api/v1/profile').set({ Authorization: `Bearer TestingSuperJWT` });
+  it("Should not be able to get balance from a nonexistent user", async () => {
+    const response = await request(app).get('/api/v1/statements/balance').set({ Authorization: `Bearer 12312` });
 
     expect(response.status).toBe(401);
   });
+
 });
