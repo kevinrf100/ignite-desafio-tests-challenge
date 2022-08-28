@@ -17,11 +17,13 @@
     "jsonwebtoken": "^8.5.1",
     "pg": "^8.5.1",
     "reflect-metadata": "^0.1.13",
+    "supertest": "^6.2.4",
     "tsyringe": "^4.5.0",
     "typeorm": "^0.2.31",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
+    "@types/supertest": "^2.0.12",
     "@types/bcryptjs": "^2.4.2",
     "@types/cors": "^2.8.10",
     "@types/express": "^4.17.11",
