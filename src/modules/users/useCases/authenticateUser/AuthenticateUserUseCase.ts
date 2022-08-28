@@ -32,8 +32,6 @@ export class AuthenticateUserUseCase {
       throw new IncorrectEmailOrPasswordError();
     }
 
-    console.log(authConfig.jwt)
-    console.log(process.env.JWT_SECRET as string)
     const { secret, expiresIn } = authConfig.jwt;
 
     const token = sign({ user }, secret, {

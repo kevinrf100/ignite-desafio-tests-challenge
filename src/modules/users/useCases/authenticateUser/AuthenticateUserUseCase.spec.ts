@@ -21,15 +21,18 @@ describe('Authentication', () => {
       name: "kevin"
     };
 
+    console.log('JWT_SECRET');
+    console.log(process.env.JWT_SECRET);
+
     const createdUser = await inMemoryUserRepository.create(user);
 
     const result = await authenticateUserUseCase.execute({email: user.email, password: '123'});
 
     expect(result).toHaveProperty("token");
     expect(result).toHaveProperty("user");
-    expect(result.user.email).toHaveProperty(user.email);
-    expect(result.user.id).toHaveProperty(createdUser.id!);
-    expect(result.user.name).toHaveProperty(user.name);
+    expect(result.user.email).toBe(user.email);
+    expect(result.user.id).toBe(createdUser.id!);
+    expect(result.user.name).toBe(user.name);
   });
 
   it('Should not be able to authenticate with wrong password', async () => {
