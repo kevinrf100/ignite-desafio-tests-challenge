@@ -1,5 +1,6 @@
 import { User } from "../../entities/User";
 import { InMemoryUsersRepository } from "../../repositories/in-memory/InMemoryUsersRepository";
+import { CreateUserError } from "./CreateUserError";
 import { CreateUserUseCase } from "./CreateUserUseCase";
 
 let createUserUseCase: CreateUserUseCase;
@@ -24,5 +25,21 @@ describe("Create user tests" ,() => {
     expect(user.email).toBe('kevin@testing.com');
     expect(user.name).toBe('kevin');
 
-  })
+  });
+
+  it("Should not be able to create a new user with email already exists", async () => {
+    expect(async() => {
+      await createUserUseCase.execute({
+        email: "kevin@testing.com",
+        password: "test",
+        name: "kevin"
+      });
+
+      await createUserUseCase.execute({
+        email: "kevin@testing.com",
+        password: "test",
+        name: "kevin"
+      });
+    }).rejects.toBeInstanceOf(CreateUserError);
+  });
 });
