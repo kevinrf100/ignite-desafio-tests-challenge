@@ -28,11 +28,12 @@ export class AuthenticateUserUseCase {
     }
 
     const passwordMatch = await compare(password, user.password);
-
     if (!passwordMatch) {
       throw new IncorrectEmailOrPasswordError();
     }
 
+    console.log(authConfig.jwt)
+    console.log(process.env.JWT_SECRET as string)
     const { secret, expiresIn } = authConfig.jwt;
 
     const token = sign({ user }, secret, {
