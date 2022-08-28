@@ -33,17 +33,21 @@ describe("Authenticate User", () => {
       email: "admin@test.com.br",
       password: "admin",
     }
+
     const response = await request(app).post('/api/v1/sessions').send(user);
-    console.log(response);
     expect(response.status).toBe(200);
+    expect(response.body).toHaveProperty("user");
+    expect(response.body.user.email).toBe(user.email);
+    expect(response.body).toHaveProperty("token");
   });
   it('Should not be able to authenticate with wrong password', async () => {
     const user = {
       email: "test",
       password: "admin",
     }
+
     const response = await request(app).post('/api/v1/sessions').send(user);
-    console.log(response);
+
     expect(response.status).toBe(401);
   });
   it('Should not be able to authenticate with wrong email', async () => {
@@ -51,40 +55,9 @@ describe("Authenticate User", () => {
       email: "admin@test.com.br",
       password: "test",
     }
+
     const response = await request(app).post('/api/v1/sessions').send(user);
-    console.log(response);
+
     expect(response.status).toBe(401);
   });
 });
-
-
-
-
-
-
-
-
-
-
-
-
-// import { app } from "../../../../app";
-// import request from "supertest";
-// import { Connection } from "typeorm";
-// import createConnection from "./../../../../database/index";
-
-// let connection: Connection;
-
-// describe("Authenticate User", () => {
-//   beforeAll(async () => {
-//     connection = await createConnection();
-
-//     await connection.runMigrations();
-
-//   });
-
-//   afterAll(async () => {
-//       await connection.dropDatabase();
-//       await connection.close();
-//   });
-// });
