@@ -33,7 +33,7 @@ describe("Create category controller", () => {
   it("Should not be able to create a user with same email", async () => {
     const user = {
       name: 'kevin',
-      email: "kevin@test.com",
+      email: "kevintest@test.com",
       password: "admin"
     }
 

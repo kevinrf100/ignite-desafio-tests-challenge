@@ -40,6 +40,7 @@ describe("Authenticate User", () => {
     expect(response.body.user.email).toBe(user.email);
     expect(response.body).toHaveProperty("token");
   });
+
   it('Should not be able to authenticate with wrong password', async () => {
     const user = {
       email: "test",
@@ -50,6 +51,7 @@ describe("Authenticate User", () => {
 
     expect(response.status).toBe(401);
   });
+
   it('Should not be able to authenticate with wrong email', async () => {
     const user = {
       email: "admin@test.com.br",
