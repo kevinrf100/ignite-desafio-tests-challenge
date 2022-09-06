@@ -5,6 +5,7 @@ import createConnection from "./../../../../database/index";
 import { v4 as uuidV4 } from "uuid";
 import { hash } from "bcryptjs";
 import { Console } from "console";
+import { CreateTransferError } from "./CreateTransferError";
 
 let connection: Connection;
 let userID: string;
@@ -59,5 +60,63 @@ describe("Should be able to create a transfer", () => {
     const response = await request(app).post(`/api/v1/statements/transfer/${userID}`).set({ Authorization: `Bearer ${token}` }).send(statement);
 
     expect(response.status).toBe(201);
+  });
+
+  it("Should not be able to transfer with insufficient founds", async () => {
+    const user = {
+      email: "admin@test.com.br",
+      password: "admin",
+    }
+    const statement = {
+      amount: 300,
+      description: "Testing"
+    }
+
+    const authResponse = await request(app).post('/api/v1/sessions').send(user);
+
+    const { token } = authResponse.body;
+
+    const response = await request(app).post(`/api/v1/statements/transfer/${userID}`).set({ Authorization: `Bearer ${token}` }).send(statement);
+
+    expect(response.status).toBe(400);
+    expect(response.body.message).toBe(new CreateTransferError.InsufficientFunds().message)
+  });
+
+  it("Should not be able to transfer from a nonexistent user", async () => {
+    const user = {
+      email: "admin@test.com.br",
+      password: "admin",
+    }
+    const statement = {
+      amount: 300,
+      description: "Testing"
+    }
+
+    const authResponse = await request(app).post('/api/v1/sessions').send(user);
+
+    const { token } = authResponse.body;
+
+    const response = await request(app).post(`/api/v1/statements/transfer/${userID}`).set({ Authorization: `Bearer ${uuidV4()}` }).send(statement);
+
+    expect(response.status).toBe(401);
+  });
+
+  it("Should not be able to transfer to a nonexistent user", async () => {
+    const user = {
+      email: "admin@test.com.br",
+      password: "admin",
+    }
+    const statement = {
+      amount: 300,
+      description: "Testing"
+    }
+
+    const authResponse = await request(app).post('/api/v1/sessions').send(user);
+
+    const { token } = authResponse.body;
+
+    const response = await request(app).post(`/api/v1/statements/transfer/${uuidV4()}`).set({ Authorization: `Bearer ${token}` }).send(statement);
+
+    expect(response.status).toBe(404);
   });
 })
