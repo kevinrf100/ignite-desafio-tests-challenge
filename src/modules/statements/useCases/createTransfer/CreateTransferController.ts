@@ -14,7 +14,7 @@ class CreateTransferController {
 
     const statement = await createTransferUseCase.execute({sender_id, amount, description, user_id ,type: OperationType.TRANSFER});
 
-    return response.json(statement);
+    return response.status(201).json(statement);
   }
 }
 
