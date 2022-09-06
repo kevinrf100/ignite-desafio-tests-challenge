@@ -1,10 +1,10 @@
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 import { OperationType } from '../../entities/Statement';
+import { CreateTransferUseCase } from './CreateTransferUseCase';
 
-import { CreateTransferUseCase } from './CreatetransferUseCase';
 
-export class CreateTransferController {
+class CreateTransferController {
   async handle(request: Request, response: Response): Promise<Response> {
     const { id: sender_id } = request.user;
     const { amount, description } = request.body;
@@ -17,3 +17,5 @@ export class CreateTransferController {
     return response.json(statement);
   }
 }
+
+export {CreateTransferController}

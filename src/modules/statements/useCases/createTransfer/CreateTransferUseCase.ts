@@ -14,7 +14,7 @@ interface IRequest {
 }
 
 @injectable()
-export class CreateTransferUseCase {
+class CreateTransferUseCase {
   constructor(
     @inject('UsersRepository')
     private usersRepository: IUsersRepository,
@@ -46,3 +46,5 @@ export class CreateTransferUseCase {
     return statement;
   }
 }
+
+export { CreateTransferUseCase }

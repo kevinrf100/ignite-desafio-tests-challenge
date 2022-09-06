@@ -1,7 +1,7 @@
 import { Router } from 'express';
 
 import { CreateStatementController } from '../modules/statements/useCases/createStatement/CreateStatementController';
-import { CreateTransferController } from '../modules/statements/useCases/createTransfer/CreatetransferController';
+import { CreateTransferController } from '../modules/statements/useCases/createTransfer/CreateTransferController';
 import { GetBalanceController } from '../modules/statements/useCases/getBalance/GetBalanceController';
 import { GetStatementOperationController } from '../modules/statements/useCases/getStatementOperation/GetStatementOperationController';
 import { ensureAuthenticated } from '../shared/infra/http/middlwares/ensureAuthenticated';
