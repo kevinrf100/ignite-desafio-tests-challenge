@@ -25,7 +25,7 @@ export class Statement {
   user_id: string;
 
   @Column('uuid')
-  sender_id: string;
+  sender_id?: string;
 
   @ManyToOne(() => User, user => user.statement)
   @JoinColumn({ name: 'user_id' })

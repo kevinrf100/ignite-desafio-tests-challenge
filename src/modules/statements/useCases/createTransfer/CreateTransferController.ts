@@ -12,8 +12,8 @@ export class CreateTransferController {
 
     const createTransferUseCase = container.resolve(CreateTransferUseCase);
 
-    createTransferUseCase.execute({sender_id, amount, description, user_id ,type: OperationType.TRANSFER});
+    const statement = await createTransferUseCase.execute({sender_id, amount, description, user_id ,type: OperationType.TRANSFER});
 
-    return response.json();
+    return response.json(statement);
   }
 }
